@@ -1,0 +1,85 @@
+body,
+h1,
+h2,
+p,
+ul,
+ol,
+li,
+figure,
+table,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+
+.grid{
+    display: grid;
+    grid-template-areas:  
+    'header'
+    'main'
+    'footer';
+    height: 100%;
+}
+
+#header{
+    background-color: #4682b4;
+    grid-area: header;
+    height: 10vh;
+    justify-content: center;
+}
+
+#main{
+    background-color:#f0f0f0;
+    grid-area: main;
+    height: 80vh;
+    max-width: 100ch;
+}
+
+#footer{
+    background-color: #4682b4;
+    grid-area: footer;
+    height: 10vh;
+}
+
+.container {
+    display: grid;
+    justify-content: center;
+}
+
+.header-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form{
+    position: relative;
+}
+
+input {
+    border: none;
+    padding: 5px;
+    width: 20vw;
+}
+
+button {
+    position: absolute;
+    right:0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer
+}
+
+svg {
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+dialog {
+    border: none;
+    width: 40vw;
+    height: 40vh;
+}
