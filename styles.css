@@ -85,8 +85,7 @@ label {
     background-color: #4682b4;
     grid-area: header;
     height: 15vh;
-    margin-bottom: 20px;
-   
+    margin-bottom: 20px;   
     justify-content: center;
     position: relative;
     color: white;
@@ -154,6 +153,11 @@ label {
     justify-content: center;
 }
 
+.current-page {
+    background-color: #4682b4;
+}
+
+
 .header-container {
     display: flex;
     flex-direction: column;
@@ -174,6 +178,31 @@ label {
     border-radius: 5px;
     cursor: pointer;
 }
+.paginacao {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-top: 15px;
+    clear: both;
+}
+
+.paginacao .paginate-button {
+    margin-bottom: 10px;
+}
+
+.paginate-list {
+    margin-left: 10px;
+}
+
+.paginate-button {
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid #008ebb;
+    padding: 6px 10px;
+    display: inline-block;
+    color: #008ebb;
+}
+
 .selects {
     display: flex;
 }
