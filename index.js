@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     svg.addEventListener('click', openModal);
     x.addEventListener('click', closeModal);
     countFilter(urlParams);
+    search();
 })
 
 async function fetchApi(apiUrl) {
@@ -24,19 +25,46 @@ async function fetchApi(apiUrl) {
 
 function openModal() {    
     const modal = document.getElementById('modal');
+    recoverInputsValues();
     modal.showModal();
 }
 
 function closeModal() {
     const modal = document.getElementById('modal');
+    saveInputsValues();
     modal.close();
+}
+
+function saveInputsValues() {
+    const form = document.getElementById('form-modal');
+    const inputs = form.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        localStorage.setItem(input.name, input.value);
+    })
+}
+
+function recoverInputsValues() {
+    const form = document.getElementById('form-modal');
+    const inputs = form.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        const savedValue = localStorage.getItem(input.name);
+        if (savedValue) input.value = savedValue;
+    })
 }
 
 function countFilter(urlParams) {
     const filterCounter = document.getElementById('filter-counter');
-    const params = urlParams.toString().split('&').filter(params => !params.startsWith('page=') && !params.startsWith('busca='));
-    params.length > 0 && params.filter(param => param !== '').length === 0 ? filterCounter.textContent = '0': filterCounter.textContent = params.length.toString();
+    const params = urlParams.toString()
+        .split('&')
+        .filter(param => param !== '' &&
+            !param.startsWith('page=') && !param.startsWith('busca='));
+    console.log(params)
+    params.length > 0 && params.filter(param => param !== '').length === 0 ?
+        filterCounter.textContent = '0' :
+        filterCounter.textContent =
+        params.length.toString();
 }
+
 
 async function submitModal() {
     const form = document.getElementById('form-modal');
@@ -97,7 +125,7 @@ function renderNews(container, news) {
         intro.textContent = data.introducao;
         const imageResponse = `${imgUrl}${JSON.parse(data.imagens).image_intro}`;
         img.src = imageResponse;
-        hashtag.textContent = formatHashtag();;
+        hashtag.textContent = formatHashtag(data.editorias);;
         buttonLeiaMais.innerText = `Leia Mais`;
         buttonLeiaMais.href = `${data.link}`;
         buttonLeiaMais.classList.add('leia-mais');
@@ -127,9 +155,43 @@ function calculatePublicationDate(publicationDate) {
         return `Publicado hoje`;
 }
 
-function formatHashtag() {
-    
+function formatHashtag(editorias) {
+    const editoriasArray = editorias.split(';').map(editoria => editoria.trim());
+    const hashtag = editoriasArray.map(editoria => `#${editoria}`).join(' ');
+    return hashtag;
 }
+
+function search() {
+    const inputBusca = document.getElementById('search-input');
+    const buttonBusca = document.getElementById('search-button');
+    
+    if (inputBusca) {
+        inputBusca.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const searchTerm = inputBusca.value;
+                searchTerms(searchTerm);
+            }
+        });
+    }
+
+    if (buttonBusca) {
+        buttonBusca.addEventListener('click', (e) => {
+            e.preventDefault();
+            const searchTerm = inputBusca.value;
+            searchTerms(searchTerm);
+        });
+    }
+}
+
+async function searchTerms(searchTerm){
+    const formattedSearchTerm = searchTerm.split(' ').join('&');
+    const newUrl = `${apiUrl}?busca=${formattedSearchTerm}`;
+    await fetchApi(newUrl);
+    window.history.replaceState({}, '', `${window.location.pathname}?busca=${formattedSearchTerm}`);
+};
+
+
 async function paginate() {
     const response = await fetch(`${apiUrl}`);
     const datas = await response.json();
@@ -181,6 +243,7 @@ function addPageButtons(ul, currentPage, totalPages) {
         }
     }
 }
+
 function addFirstPageButton(ul, currentPage) {
     const li = document.createElement('li');
     li.classList.add('paginate-list');
@@ -232,8 +295,5 @@ function setPage(page) {
 }
 
 /* TODO
-- COLOCAR # NOS EDITORIAIS QUE POSSUEM MAIS DE UM ELEMENTO
-- BUSCA
-- RESPONSIVIDADE
 - SE DER TEMPO: LIMPAR INPUTS
 */

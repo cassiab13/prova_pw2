@@ -8,65 +8,66 @@
 </head>
 <body>
     <div class="grid">
-    <header id="header">
-        <div class="header-container">
-            <h1>Portal de Notícias do IBGE</h1>
-                <form class="form" id="form-busca">
-                     <input id="busca" type="text" placeholder="Buscar notícia por termo"> 
-                    <button class="search">🔍</button>
-                </form>
-        </div>
-        <svg
+        <header id="header">
+            <div class="header-container">
+                <h1>Portal de Notícias do IBGE</h1>
+                    <form class="form" id="form-busca">
+                    <input id="search-input" type="text" placeholder="Buscar notícia por termo"> 
+                    <button id="search-button" class="search">🔍</button>
+                    </form>
+            </div>
+            <svg
             width="20"
             height="20"
             fill="#f0f0f0"
             viewBox="0 0 80 90"
             focusable="false"
             xmlns="http://www.w3.org/2000/svg"
-        >
-        <path d="m 0,0 30,45 0,30 10,15 0,-45 30,-45 Z"></path>
-        </svg>
-        <span id="filter-counter"></span>
-    </header>
-    <div id = "container" class="container">
-    <main id="main"></main>
-    </div>
-
-    <footer id="footer">Prova do segundo bimestre - Programação WEB</footer>
-    </div>
-    <dialog id="modal">
-        <button id="x" class="x">X</button>
-        <form id="form-modal">
-            <div class="selects">
-                <div class="select-side">
-            <label for="tipo">Tipo</label>
-            <select name="tipo" id="tipo">
-                <option value="">Selecione</option>
-                <option value="noticias">Notícias</option>
-                <option value="releases">Releases</option>
-            </select>
-                </div>
-                <div class="select-side">
-            <label for="quantidade">Quantidade</label>
-            <select name="qtd" id="qtd">
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-            </select>
-                </div>
+            >
+            <path d="m 0,0 30,45 0,30 10,15 0,-45 30,-45 Z"></path>
+            </svg>
+            <span id="filter-counter"></span>
+        </header>
+            <div id = "container" class="container">
+                <main id="main"></main>
             </div>
+
+        <footer id="footer">Prova do segundo bimestre - Programação WEB</footer>
+    </div>
+<dialog id="modal">
+    <button id="x" class="x">X</button>
+    <form id="form-modal">
+        <div class="selects">
+            <div class="select-side">
+                <label for="tipo">Tipo</label>
+                    <select name="tipo" id="tipo">
+                        <option value="">Selecione</option>
+                        <option value="noticias">Notícias</option>
+                        <option value="releases">Releases</option>
+                    </select>
+            </div>
+            <div class="select-side">
+                <label for="quantidade">Quantidade</label>
+                    <select name="qtd" id="qtd">
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+            </div>
+        </div>
             <div class="inputs">
                 <div class="input-side">
-            <label for="de">De</label>
-            <input type="date" name="de" id="de">
+                    <label for="de">De</label>
+                    <input type="date" name="de" id="de">
                 </div>
                 <div class="input-side">
-            <label for="ate">Até</label>
-            <input type="date" name="ate" id="ate">
+                    <label for="ate">Até</label>
+                    <input type="date" name="ate" id="ate">
                 </div>
             </div>
-           <div class="button-container">
-            <button class="apply" type="button" onclick="submitModal()">Aplicar</button>
+            <div class="button-container">
+                <button class="apply" type="button" onclick="submitModal()">Aplicar</button>
+                <button class="apply" type="button" onclick="submitModal()">Limpar filtros</button>
            </div>
         </form>
        </dialog>
