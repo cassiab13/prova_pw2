@@ -1,4 +1,3 @@
-# prova_pw2
 # Projeto de Notícias IBGE
 
 ## Visão Geral
