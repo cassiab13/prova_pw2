@@ -6,16 +6,18 @@ const container = document.getElementById('container');
 const main = document.getElementById('main');
 const x = document.getElementById('x');
 let urlParams = new URLSearchParams(window.location.search);
+if (!urlParams.has('qtd')) urlParams.set('qtd', '10');
+window.history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetchApi(`${apiUrl}?qtd=10&page=${urlParams.get('page') || 1}`);
+    fetchApi(`${apiUrl}?${urlParams}`);
     svg.addEventListener('click', openModal);
     x.addEventListener('click', closeModal);
     countFilter(urlParams);
     search();
 })
 
-async function fetchApi(apiUrl) {
+async function fetchApi(apiUrl) {    
     const response = await fetch(apiUrl);
     const datas = await response.json();
     main.innerHTML = '';
@@ -58,7 +60,6 @@ function countFilter(urlParams) {
         .split('&')
         .filter(param => param !== '' &&
             !param.startsWith('page=') && !param.startsWith('busca='));
-    console.log(params)
     params.length > 0 && params.filter(param => param !== '').length === 0 ?
         filterCounter.textContent = '0' :
         filterCounter.textContent =
@@ -84,6 +85,7 @@ async function submitModal() {
 
     window.history.replaceState({}, '', `${window.location.pathname}?${newParams.toString()}`);
     countFilter(newParams);
+    console.log(newParams)
     const newUrl = `${apiUrl}?${newParams.toString()}`;
     fetchApi(newUrl).then(() => { closeModal() });
 }
@@ -123,9 +125,13 @@ function renderNews(container, news) {
 
         h2.textContent = data.titulo;
         intro.textContent = data.introducao;
-        const imageResponse = `${imgUrl}${JSON.parse(data.imagens).image_intro}`;
-        img.src = imageResponse;
-        hashtag.textContent = formatHashtag(data.editorias);;
+        if (data.imagens) {
+            const imageResponse = `${imgUrl}${JSON.parse(data.imagens).image_intro}`;
+            img.src = imageResponse;
+        } else {
+            img.src = './ibge.png'
+        }
+        hashtag.textContent = formatHashtag(data.editorias);
         buttonLeiaMais.innerText = `Leia Mais`;
         buttonLeiaMais.href = `${data.link}`;
         buttonLeiaMais.classList.add('leia-mais');
@@ -156,15 +162,24 @@ function calculatePublicationDate(publicationDate) {
 }
 
 function formatHashtag(editorias) {
-    const editoriasArray = editorias.split(';').map(editoria => editoria.trim());
-    const hashtag = editoriasArray.map(editoria => `#${editoria}`).join(' ');
-    return hashtag;
+    if (editorias) {
+        const editoriasArray = editorias.split(';').map(editoria => editoria.trim());
+        const hashtag = editoriasArray.map(editoria => `#${editoria}`).join(' ');
+        return hashtag;
+    } else return;
 }
 
 function search() {
     const inputBusca = document.getElementById('search-input');
     const buttonBusca = document.getElementById('search-button');
-    
+    if (inputBusca) {
+        inputBusca.addEventListener('input', () => {
+            if (inputBusca.value.trim() === '') {
+                window.location.href = window.location.origin;
+                return;
+            }
+        });
+    }
     if (inputBusca) {
         inputBusca.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -184,11 +199,13 @@ function search() {
     }
 }
 
-async function searchTerms(searchTerm){
+async function searchTerms(searchTerm) {
     const formattedSearchTerm = searchTerm.split(' ').join('&');
     const newUrl = `${apiUrl}?busca=${formattedSearchTerm}`;
-    await fetchApi(newUrl);
-    window.history.replaceState({}, '', `${window.location.pathname}?busca=${formattedSearchTerm}`);
+    await fetchApi(newUrl)
+    .then(
+        window.history.replaceState({}, '', `${window.location.pathname}?busca=${formattedSearchTerm}`))
+    .then (countFilter(urlParams));
 };
 
 
@@ -197,7 +214,7 @@ async function paginate() {
     const datas = await response.json();
     const urlParams = new URLSearchParams(window.location.search);
     const currentPage = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
-    const totalPages = Math.min(382, datas.items.length / 10);
+    const totalPages = Math.ceil(datas.items.length / 10);
     renderPaginate(currentPage, totalPages);
 }
 
@@ -288,12 +305,26 @@ function addLastPageButton(ul, currentPage, totalPages) {
     ul.appendChild(li);
 }
 
-function setPage(page) {
+async function setPage(page) {
     urlParams.set('page', page);
+    urlParams.set('qtd', '10');
     window.history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
-    fetchApi(`${apiUrl}?qtd=10&page=${page}`);
+    await fetchApi(`${apiUrl}?qtd=10&page=${page}`);
 }
 
-/* TODO
-- SE DER TEMPO: LIMPAR INPUTS
-*/
+async function resetFilter() {
+    const form = document.getElementById('form-modal');
+    const inputs = form.querySelectorAll('input, select');
+    const newParams = new URLSearchParams(urlParams);
+
+    inputs.forEach(input => {
+        const name = input.name;
+        input.value = '';
+        if (name === 'qtd')input.value = 10
+        newParams.delete(name)
+    });
+
+    window.history.replaceState({}, '', `${window.location.pathname}?qtd=10${newParams.toString()}`);
+    countFilter(newParams);
+    await fetchApi(`${apiUrl}?qtd=10`);
+}

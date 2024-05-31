@@ -42,7 +42,7 @@ svg {
 dialog {
     border: none;
     width: 30vw;
-    height: 30vh;
+    height: 40vh;
 }
 
 img {
@@ -117,7 +117,7 @@ label {
 #header{
     background-color: #4682b4;
     grid-area: header;
-    height: 15vh;
+    height: 20vh;
     margin-bottom: 20px;   
     justify-content: center;
     position: relative;
@@ -193,7 +193,7 @@ label {
 .leia-mais {
     display: inline-block;
     padding: 10px 20px;
-    width: 90%;
+    width: 750px;
     margin-left: 10px;
     background-color: #4682b4;
     text-align: center;
@@ -255,7 +255,11 @@ label {
     background-color: transparent;
     cursor: pointer;
 } 
+
  @media (max-width: 760px) {
+    dialog {
+        overflow-y: auto;
+    }
      .selects,
      .inputs {
          flex-direction: column;
@@ -266,7 +270,9 @@ label {
          width: 100%;
          margin-bottom: 10px;
      }
- 
+     .leia-mais{
+        width: 90vw;
+     }
      #search-input {
          width: 70vw;
      }
