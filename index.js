@@ -175,7 +175,7 @@ function search() {
     if (inputBusca) {
         inputBusca.addEventListener('input', () => {
             if (inputBusca.value.trim() === '') {
-                window.location.href = window.location.origin;
+                window.location.href = `${window.location.pathname}?qtd=10`;
                 return;
             }
         });
