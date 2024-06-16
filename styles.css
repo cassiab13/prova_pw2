@@ -23,12 +23,12 @@ h1 {
 
 h2 {
     font-size: 20px;
-    margin-bottom: 10px;
+    margin: 0 10px 10px 10px;
 }
 
 p {
     font-size: 12px;
-    margin-bottom: 10px;
+    margin: 0 10px 10px 10px;
 }
 
 svg {
@@ -49,6 +49,7 @@ img {
     width: 170px;
     height: 170px;
     margin-right: 10px;
+    margin-left: 10px;
     background-color: #f0f0f0;
 }
 
@@ -124,6 +125,13 @@ label {
     color: white;
 }
 
+#info-news{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 #main{
     background-color:#f0f0f0;
     grid-area: main;
@@ -132,6 +140,12 @@ label {
 
 #modal {
     position: relative;
+    height: 30%;
+}
+
+#news-container{
+    display: flex;
+    flex-direction: column;;
 }
 
 #search-input {
@@ -190,11 +204,12 @@ label {
     width: 50%;
 }
 
+
 .leia-mais {
-    display: inline-block;
     padding: 10px 20px;
-    width: 750px;
+    max-width: auto;
     margin-left: 10px;
+    margin-right: 10px;
     background-color: #4682b4;
     text-align: center;
     color: white;
@@ -257,24 +272,54 @@ label {
 } 
 
  @media (max-width: 760px) {
+    h2 {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 10px;
+    }
+
     dialog {
         overflow-y: auto;
     }
-     .selects,
-     .inputs {
+
+    .selects,
+    .inputs {
          flex-direction: column;
      }
  
-     .select-side,
-     .input-side {
+    .select-side,
+    .input-side {
          width: 100%;
          margin-bottom: 10px;
      }
-     .leia-mais{
-        width: 90vw;
+    .leia-mais{
+        min-width: 20vw;
      }
+    
+    .button,
+    .paginate-button,
+    .leia-mais {
+        width: auto;
+        font-size: 10px;
+        padding: 5px;
+        min-width: 10%;
+    }
+
+    .paginate-button {
+        padding: 6px 8px;
+        text-align: center;
+    }
+
+    #news-container img {
+        max-width: 100%;
+        height: auto;
+    }
+
      #search-input {
          width: 70vw;
      }
+ 
  }
  

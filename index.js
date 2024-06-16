@@ -109,18 +109,22 @@ function renderNews(container, news) {
         const h2 = document.createElement('h2');
         const intro = document.createElement('p');
         const img = document.createElement('img');
+        const infoHashtagRelease = document.createElement('div');
         const hashtag = document.createElement('p');
-        const publicacao = document.createElement('p');
+        const release = document.createElement('p');
         const buttonLeiaMais = document.createElement('a');
 
         container.appendChild(ul);
         ul.appendChild(li);
         li.appendChild(img);
         li.appendChild(div);
+        div.id = 'news-container';
         div.appendChild(h2);
         div.appendChild(intro);
-        div.appendChild(hashtag);
-        div.appendChild(publicacao);
+        div.appendChild(infoHashtagRelease);
+        infoHashtagRelease.id = 'info-news';
+        infoHashtagRelease.appendChild(hashtag);
+        infoHashtagRelease.appendChild(release);
         div.appendChild(buttonLeiaMais);
 
         h2.textContent = data.titulo;
@@ -135,7 +139,7 @@ function renderNews(container, news) {
         buttonLeiaMais.innerText = `Leia Mais`;
         buttonLeiaMais.href = `${data.link}`;
         buttonLeiaMais.classList.add('leia-mais');
-        publicacao.textContent = calculatePublicationDate(data.data_publicacao);
+        release.textContent = calculatePublicationDate(data.data_publicacao);
     });
 }
 
