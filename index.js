@@ -141,12 +141,12 @@ function renderNews(container, news) {
 
 function calculatePublicationDate(publicationDate) {
     const dataAtual = new Date();
-    const dataPublicacao = publicationDate.split(/[\/\s]+/);
-
-    const diferencaAnos = (dataAtual.getFullYear() - dataPublicacao[2]);
-    const diferencaMeses = (dataAtual.getMonth() + 1 - dataPublicacao[1]);
-    const diferencaDias = (dataAtual.getDate() - dataPublicacao[0]);
-
+    const dataPublicacao = new Date(publicationDate);
+    
+    const diferencaAnos = (dataAtual.getFullYear() - dataPublicacao.getFullYear());
+    const diferencaMeses = (dataAtual.getMonth() - dataPublicacao.getMonth());
+    const diferencaDias = (dataAtual.getDate() - dataPublicacao.getDate());
+    
     if (diferencaAnos > 0)
         return `Publicado ${diferencaAnos} ano(s) atrás`;
     else if (diferencaMeses === 1) 
@@ -214,7 +214,7 @@ async function paginate() {
     const datas = await response.json();
     const urlParams = new URLSearchParams(window.location.search);
     const currentPage = urlParams.has('page') ? parseInt(urlParams.get('page')) : 1;
-    const totalPages = Math.ceil(datas.items.length / 10);
+    const totalPages = datas.totalPages;
     renderPaginate(currentPage, totalPages);
 }
 
